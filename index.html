@@ -303,7 +303,7 @@
 
     <div class="price-rows">
       <div class="price-row"><span id="pr-base-label">구간 기본요금</span><span class="amount" id="pr-base">—</span></div>
-      <div class="price-row" id="pr-fuel-row" style="opacity:0.35;"><span id="pr-fuel-label">유류 할증료</span><span class="amount" id="pr-fuel">—</span></div>
+
       <div class="price-row" id="pr-pax-fee-row" style="opacity:0.35;"><span id="pr-pax-fee-label">인원 추가요금</span><span class="amount" id="pr-pax-fee">—</span></div>
       <div class="price-row" id="pr-lug-fee-row" style="opacity:0.35;"><span id="pr-lug-fee-label">수화물 추가요금</span><span class="amount" id="pr-lug-fee">—</span></div>
       <div class="price-row" id="pr-night-row" style="opacity:0.35;"><span>심야/새벽 할증 (10pm–6am)</span><span class="amount" id="pr-night">+A$20</span></div>
@@ -333,8 +333,7 @@
           <span class="pkg-tag">🚌 반일 코스</span><span class="pkg-tag">🌿 열대우림</span><span class="pkg-tag">📸 포토스팟</span><span class="pkg-tag">👥 4인 이상 출발</span>
         </div>
         <div class="pkg-meta" style="margin-top:14px;">
-          <div class="pkg-price">A$130 <span>/ 1인</span></div><div class="pkg-nights">⏱ 6-8시간</div>
-          <div style="font-size:0.7rem;color:rgba(200,151,58,0.8);margin-top:4px;">⛽ 유류 할증료 A$50 별도</div>
+          <div class="pkg-price">A$150 <span>/ 1인</span></div><div class="pkg-nights">⏱ 6-8시간</div>
         </div>
       </div>
     </div>
@@ -352,7 +351,6 @@
         </div>
         <div class="pkg-meta" style="margin-top:14px;">
           <div class="pkg-price">A$200 <span>/ 1인</span></div><div class="pkg-nights">⏱ 12시간</div>
-          <div style="font-size:0.7rem;color:rgba(200,151,58,0.8);margin-top:4px;">⛽ 유류 할증료 A$50 별도</div>
         </div>
       </div>
     </div>
@@ -370,7 +368,6 @@
         </div>
         <div class="pkg-meta" style="margin-top:14px;">
           <div class="pkg-price">A$120 <span>/ 1인</span></div><div class="pkg-nights">⏱ 4시간</div>
-          <div style="font-size:0.7rem;color:rgba(200,151,58,0.8);margin-top:4px;">⛽ 유류 할증료 A$20 별도</div>
         </div>
       </div>
     </div>
@@ -597,7 +594,7 @@
   <div class="modal wine-modal" style="max-height:90vh;overflow-y:auto;">
     <button class="modal-close" onclick="closeHeliModal()">✕</button>
     <div class="modal-title" id="heli-modal-title">그레이트 오션 로드 숏코스</div>
-    <div class="modal-sub" id="heli-modal-sub">투어 A$130 / 1인 · 헬기 투어 옵션 추가 선택 (선택사항)</div>
+    <div class="modal-sub" id="heli-modal-sub">투어 A$150 / 1인 · 헬기 투어 옵션 추가 선택 (선택사항)</div>
 
     <!-- 투어 코스 안내 -->
     <div id="heli-course-info" style="margin-bottom:16px;padding:14px 16px;background:var(--paper);border-radius:10px;border:1px solid var(--mist);">
@@ -696,7 +693,7 @@
               <div class="wine-sub">전 해안선 완전 일주 · 17 랜드마크 (220km)</div>
             </div>
           </div>
-          <div class="wine-price">+A$745/인</div>
+          <div class="wine-price">+A$795/인</div>
         </div>
         <div id="heli-cape-pax" style="display:none;padding:10px 16px;background:rgba(200,151,58,0.06);border-top:1px solid rgba(200,151,58,0.2);">
           <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -755,7 +752,7 @@
             <div class="wine-check" id="check-yering"></div>
             <div><div class="wine-name">🍷 Yering Station</div><div class="wine-sub">야라 밸리 대표 올드 빈야드 시음</div></div>
           </div>
-          <div class="wine-price">+A$15/인</div>
+          <div class="wine-price">+A$16.5/인</div>
         </div>
         <div id="wine-yering-pax" style="display:none;padding:10px 16px;background:rgba(200,151,58,0.06);border-top:1px solid rgba(200,151,58,0.2);">
           <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -1064,23 +1061,19 @@
       const paxFee  = getPaxFee(pax);
       const lugFee  = getLugFee(largeLug);
       const nightFee = isNight ? 20 : 0;
-      // 유류 할증료: 10km당 A$10
-      const fuelFee = Math.round(distKm * 0.5 * 10) / 10;
-      const total   = zone.base + fuelFee + paxFee + lugFee + nightFee;
+      // 유류 할증료를 구간 기본요금에 포함
+      const fuelFee  = Math.round(distKm * 0.5 * 10) / 10;
+      const baseTotal = zone.base + fuelFee;
+      const total    = baseTotal + paxFee + lugFee + nightFee;
 
       // 구간 배지
       const badge = document.getElementById('pr-zone-badge');
       badge.innerHTML = `📍 실거리 <strong>${distKm.toFixed(1)}km</strong> · ${zone.label} 구간 적용`;
       badge.style.display = 'block';
 
-      // 기본요금
+      // 기본요금 (유류 할증료 포함)
       document.getElementById('pr-base-label').textContent = `구간 기본요금 (${zone.label})`;
-      document.getElementById('pr-base').textContent = `A$${zone.base}`;
-
-      // 유류 할증료
-      document.getElementById('pr-fuel-row').style.opacity = '1';
-      document.getElementById('pr-fuel-label').textContent = `유류 할증료 (${distKm.toFixed(1)}km × A$0.5/km)`
-      document.getElementById('pr-fuel').textContent = `+A$${fuelFee.toFixed(2)}`
+      document.getElementById('pr-base').textContent = `A$${baseTotal.toFixed(2)}`;
 
       // 인원 추가요금
       const paxRow = document.getElementById('pr-pax-fee-row');
@@ -1149,8 +1142,6 @@
       noRouteEl.style.display = 'block';
       document.getElementById('pr-zone-badge').style.display = 'none';
       document.getElementById('pr-base').textContent      = '—';
-      document.getElementById('pr-fuel-row').style.opacity = '0.35';
-      document.getElementById('pr-fuel').textContent      = '—';
       document.getElementById('pr-pax-fee').textContent   = '—';
       document.getElementById('pr-lug-fee').textContent   = '—';
       document.getElementById('pr-total').textContent     = '—';
@@ -1232,7 +1223,7 @@
 
   // PACKAGES
   const pkgData = {
-    'great-ocean-short': { name:'그레이트 오션 로드 (숏코스)', price:'A$130', duration:'6-8시간' },
+    'great-ocean-short': { name:'그레이트 오션 로드 (숏코스)', price:'A$150', duration:'6-8시간' },
     'great-ocean-full':  { name:'그레이트 오션 로드 (풀코스)', price:'A$200', duration:'12시간' },
     'melbourne':         { name:'멜번 시티 투어',               price:'A$80',  duration:'4시간' },
   };
@@ -1257,7 +1248,7 @@
     none:   { label:'투어만 이용', price:0 },
     london: { label:'🚁 London Bridge 16분', price:195 },
     bay:    { label:'🚁 Bay of Islands 25분', price:295 },
-    cape:   { label:'🚁 Cape Otway 1시간', price:745 },
+    cape:   { label:'🚁 Cape Otway 1시간', price:795 },
   };
   const HELI_KEYS = ['none','london','bay','cape'];
   const HELI_OPT_KEYS = ['london','bay','cape'];
@@ -1314,7 +1305,7 @@
     HELI_OPT_KEYS.forEach(k => { heliOptPaxCount[k] = 1; document.getElementById('heli-'+k+'-pax-val').textContent = '1'; });
     document.getElementById('heli-adult-val').textContent = '1';
     document.getElementById('heli-child-val').textContent = '0';
-    const basePrice = course === 'short' ? 130 : 200;
+    const basePrice = course === 'short' ? 150 : 200;
     document.getElementById('heli-modal-title').textContent = course==='short' ? '그레이트 오션 로드 숏코스' : '그레이트 오션 로드 풀코스';
     document.getElementById('heli-modal-sub').textContent = `투어 A$${basePrice} / 1인 · 헬기 투어 옵션 추가 선택 (선택사항)`;
     document.getElementById('heli-course-stops').innerHTML = renderCourseStops(course);
@@ -1356,7 +1347,7 @@
   }
 
   function calcHeliTotal() {
-    const basePrice = heliCourse === 'short' ? 130 : 200;
+    const basePrice = heliCourse === 'short' ? 150 : 200;
     const adultAmt  = basePrice * heliPaxCount.adult;
     const childAmt  = Math.round(basePrice * 0.5) * heliPaxCount.child;
     const fmtRow = (label, amt) => `
@@ -1376,7 +1367,6 @@
     }
 
     const fuelFee = 50;
-    rows.push(fmtRow("유류 할증료", fuelFee));
     const total = adultAmt + childAmt + heliAmt + fuelFee;
     document.getElementById('heli-fare-rows').innerHTML = rows.join('');
     document.getElementById('heli-total').textContent = `A$${total}`;
@@ -1418,7 +1408,7 @@
   }
 
   // YARRA WINE
-  const wineOpts = { yering:{label:'Yering Station',price:15}, chandon:{label:'Chandon',price:22}, oakridge:{label:'Oakridge',price:15} };
+  const wineOpts = { yering:{label:'Yering Station',price:16.5}, chandon:{label:'Chandon',price:22}, oakridge:{label:'Oakridge',price:15} };
   const wineSelected = { yering:false, chandon:false, oakridge:false };
   const wineOptPaxCount = { yering:1, chandon:1, oakridge:1 };
   const yarraPaxCount = { adult:1 };
@@ -1488,7 +1478,6 @@
       rows.push(fmtRow(`${w.label} 시음 A$${w.price} × ${pax}명`, amt));
     });
     const fuelFee = 20;
-    rows.push(fmtRow("유류 할증료", fuelFee));
     const total = baseAmt + wineAmt + fuelFee;
     document.getElementById('yarra-fare-rows').innerHTML = rows.join('');
     document.getElementById('yarra-total').textContent = `A$${total}`;
